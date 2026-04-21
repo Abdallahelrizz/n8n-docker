@@ -31,6 +31,8 @@ COPY --from=poppler-builder /usr/lib/liblzma* /usr/lib/
 COPY --from=poppler-builder /usr/lib/libwebp* /usr/lib/
 COPY --from=poppler-builder /usr/lib/libsharpyuv* /usr/lib/
 
+RUN apk add --no-cache ghostscript
+
 # Install exceljs globally so the Code Node can find it
 RUN npm install -g exceljs
 
@@ -47,6 +49,7 @@ RUN mkdir -p /data && chmod 777 /data
 
 # Make globally installed npm modules available to Code Nodes
 ENV NODE_PATH=/usr/local/lib/node_modules
+ENV NODE_OPTIONS=--experimental-require-module
 
 # Stay as root — Railway volumes mount as root
 USER root
